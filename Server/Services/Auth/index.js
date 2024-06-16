@@ -18,7 +18,7 @@ const signup = async (req, res) => {
     const newUser = new User({ email: email, password: hash });
     await newUser.save();
     const token = generateToken(email);
-    res.json({ message: "User signed up successfully", Token: token });
+    res.json({ message: "User signed up successfully", data : newUser, Token: token });
   } catch (error) {
     console.error("Error signing up user:", error);
     res.status(500).json({ message: "Failed to sign up user" });
