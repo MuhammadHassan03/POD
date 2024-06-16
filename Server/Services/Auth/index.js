@@ -41,16 +41,28 @@ const login = async (req, res) => {
         error: "Invalid Email or Password",
       });
     }
-    if (!req.headers.authorization) {
-      const token = generateToken(email);
-      res.status(200).json({
-        message: "Login Success",
-        Token: token,
-      });
+    const newtoken = req?.newtoken
+    if(newtoken){
+      return res.status(200).json({
+        message : 'Login Success',
+        token : newtoken
+      })
     }
-    res.status(200).json({
+
+    return res.status(200).json({
       message: "Login Success",
     });
+
+    // if (!req.headers.authorization) {
+    //   const token = generateToken(email);
+    //   res.status(200).json({
+    //     message: "Login Success",
+    //     Token: token,
+    //   });
+    // }
+    // res.status(200).json({
+    //   message: "Login Success",
+    // });
   } catch (error) {
     console.log(error);
     res.status(400).json({

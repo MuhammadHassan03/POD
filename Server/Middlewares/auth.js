@@ -14,17 +14,20 @@ function authenticateToken(req, res, next) {
     try {
       const token = req?.headers.authorization.split(" ")[1];
       if (token) {
-        jwt.verify(token, secretKey, (err, proceed) => {
+        jwt.verify(token, secretKey, (err, decoded) => {
           if (err) {
-            res.status(401).json({
-              error: "Unauthorized",
-            });
+            if(err.name === 'TokenExpiredError'){
+              const newtoken = generateToken(req.body.email);
+              req.newtoken = newtoken
+              next();
+            }
           } else {
             next();
           }
         });
       }
     } catch (error) {
+      console.log(error)
       res.status(401).json({
         error: "Unauthorized",
       });
